@@ -12,10 +12,42 @@ soup = BeautifulSoup(page.content, 'html.parser')
 
 results_table = soup.find_all('table', class_="rm_tbl rm_pad_2 rm_border_lite")
 
-# print(results_table)
+# print(len(results_table))
+#results_table[i] gives each table, results_table holds all the results tables
 
-mercs_count = 0
-boats = []
+# for i in range(len(results_table)):
+#     print(results_table[i])
+#     print(len(results_table[i]))
+#     print('\n')
+    
+
+# mercs_count = 0
+# boats = []
+
+placing = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th']
+dict_placings = {}
+
+table_rows = soup.find_all('tr')
+
+for tr in table_rows:
+    tds = tr.find_all('td')
+    # print(len(tds), type(tds))
+    # print(tds, '\n')
+    for i in range(len(tds)):                                           # for each of the rows of table data
+        if tds[i].text[0:4] == 'Race':                                  # checks for the 'header' so we know which race
+            print('----------------------')
+            print(tds[0].text, tds[1].text, tds[2].text)
+        elif tds[i].text in placing:
+            if tds[i + 1].text == 'MERCANTILE':
+                print('\n')
+                print('PLACE: ', tds[i].text, tds[i+1].text)
+            # print('')
+        elif tds[i].text.strip() != '' and (tds[0].text == 'Place') :   # clearing out the lines with just whitespace
+            
+            # print(tds[i].text)
+            continue
+
+
 
 
 
