@@ -1,3 +1,4 @@
+from typing import final
 import requests;
 from bs4 import BeautifulSoup
 
@@ -29,25 +30,50 @@ dict_placings = {}
 
 table_rows = soup.find_all('tr')
 
+final_results = {}
+
 for tr in table_rows:
     tds = tr.find_all('td')
-    # print(len(tds), type(tds))
+    
+    # print(len(tds), tds, '\n')
+    # lengths are 2, 3, 8 and 5X
+    if len(tds) == 2:
+        if tds[0].text.strip() != '':
+            print('MEDAL: ', tds[0].text)
+        else:
+            print('CREW: ', tds[1].text)
+    elif len(tds) == 9:
+        print('\n')
+        if tds[0].text.strip() != '':
+            print('PLACE: ', tds[0].text)
+        print('school: ', tds[1].text)
+        print('time: ', tds[6].text, ' margin1: ', tds[7].text, ' margin2', tds[8].text)
+    elif len(tds) == 3:
+        print('\n')
+        print('------------------------------------------')
+        print(tds[0].text, ' | ', tds[1].text, ' | ', tds[2].text)
+        final_results[tds[0].text.strip()[5:]] = 'test'
+    elif len(tds) == 4: # scratched
+        print('\n')
+        print(tds[3].text.strip())
+
+print(final_results)
+
     # print(tds, '\n')
-    for i in range(len(tds)):                                           # for each of the rows of table data
-        if tds[i].text[0:4] == 'Race':                                  # checks for the 'header' so we know which race
-            print('----------------------')
-            print(tds[0].text, tds[1].text, tds[2].text)
-        elif tds[i].text in placing:
-            if tds[i + 1].text == 'MERCANTILE':
-                print('\n')
-                print('PLACE: ', tds[i].text, tds[i+1].text)
-            # print('')
-        elif tds[i].text.strip() != '' and (tds[0].text == 'Place') :   # clearing out the lines with just whitespace
+
+    # for i in range(len(tds)):                                           # for each of the rows of table data
+    #     if tds[i].text[0:4] == 'Race':                                  # checks for the 'header' so we know which race
+    #         print('----------------------')
+    #         print(tds[0].text, tds[1].text, tds[2].text)
+    #     elif tds[i].text in placing:
+    #         if tds[i + 1].text == 'MERCANTILE':
+    #             print('\n')
+    #             print('PLACE: ', tds[i].text, tds[i+1].text)
+    #         # print('')
+    #     elif tds[i].text.strip() != '' and (tds[0].text == 'Place') :   # clearing out the lines with just whitespace
             
-            # print(tds[i].text)
-            continue
-
-
+    #         # print(tds[i].text)
+    #         continue
 
 
 
